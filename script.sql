@@ -1,0 +1,4 @@
+CREATE SCHEMA IF NOT EXISTS case_sample;
+SELECT DATABASE();
+
+USE case_sample;
