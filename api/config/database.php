@@ -1,10 +1,10 @@
 <?php
 class Database{
  
-    private $host = "localhost";
+    private $host = "localhost:3306";
     private $db_name = "case_sample";
-    private $username = "sysdba";
-    private $password = "masterkey";
+    private $username = "marcelo";
+    private $password = "marcelo33";
     public $conn;
  
     public function getConnection() {

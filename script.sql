@@ -37,3 +37,9 @@ CREATE TABLE IF NOT EXISTS TicketInteraction (
     InteractionID int,
     PRIMARY KEY (Id)
 );
+
+CREATE VIEW VW_TicketInteraction AS
+SELECT TI.TicketID, I.Message, I.Sender, I.Subject, I.DateCreate 
+  FROM TicketInteraction TI Left Join
+	   Ticket T ON T.TicketID = TI.TicketID LEFT JOIN
+       Interaction I ON I.Id = TI.InteractionID;
