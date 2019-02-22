@@ -3,6 +3,7 @@ class Ticket {
  
     private $conn;
     private $table_name = "Ticket";
+    private $limit = 30;
  
     public $TicketID;
     
@@ -10,13 +11,14 @@ class Ticket {
         $this->conn = $db;
     }
 
-    function readToJson($ordering, $start, $end){ 
+    function readToJson($ordering, $start, $end, $pag){ 
         $order = $this->getOrderBy($ordering);
         $filter = $this->getFilters($start, $end);
+        $pagination = $this->getPage($pag);
         $response=array();
 
-        $query = "SELECT * FROM " . $this->table_name . " " . $filter . " " . $order;
-
+        $query = "SELECT * FROM " . $this->table_name . " " . $filter . " " . $order . " " . $pagination;
+        
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
 
@@ -37,6 +39,15 @@ class Ticket {
         }
      
         return $response;
+    }
+
+    function getPage($pag) {
+        if (strlen($pag) > 0 && is_numeric($pag)) {
+            $offset = $this->limit * $pag;
+            return " LIMIT " . $this->limit . " OFFSET " . $offset;    
+        }
+
+        return " LIMIT " . $this->limit;
     }
 
     function getOrderBy($ordering) {

@@ -12,6 +12,11 @@ $db = $database->getConnection();
 $ordering = "";
 $start = "";
 $end = "";
+$pag = "";
+
+if (isset($_GET['pag'])) {
+    $pag = $_GET['pag'];
+}
 
 if (isset($_GET['order'])) {
     $ordering = $_GET['order'];
@@ -28,7 +33,7 @@ if (isset($_GET['end'])) {
 $ticket = new Ticket($db);
 $interaction = new Interaction($db);
 
-$tickets = $ticket->readToJson($ordering, $start, $end);
+$tickets = $ticket->readToJson($ordering, $start, $end, $pag);
 
 for ($x = 0; $x < count($tickets); $x++) {
     $tickets[$x]["Interactions"] = $interaction->getByTicket($tickets[$x]["TicketID"]);
