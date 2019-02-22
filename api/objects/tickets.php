@@ -4,7 +4,7 @@ class Ticket {
     private $conn;
     private $table_name = "Ticket";
     private $limit = 30;
- 
+    
     public $TicketID;
     
     public function __construct($db){
@@ -83,6 +83,32 @@ class Ticket {
         }
 
         return false;
+    }
+
+    function getPriority($ticket, $high_priority) {
+        $customerInteractions = array_filter($ticket["Interactions"], function ($e) use ($high_priority) {
+            if ($e["Sender"] != "Customer") {
+                return false;
+            }
+            
+            for ($x = 0; $x < count($high_priority); $x++) {
+                if(preg_match("/{$high_priority[$x]}/i", strtolower($e["Subject"]))) {
+                    return true;
+                }
+                if(preg_match("/{$high_priority[$x]}/i", strtolower($e["Message"]))) {
+                    return true;
+                }
+            }
+            
+            return false;
+        });
+
+        
+        if (count($customerInteractions) > 0) {
+            return "Alta";
+        } else {
+            return "Normal";
+        }
     }
 }
 ?>
