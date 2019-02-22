@@ -42,5 +42,12 @@ for ($x = 0; $x < count($tickets); $x++) {
     $tickets[$x]["Priority"] = $ticket->getPriority($tickets[$x], $high_priority);    
 } 
 
+if ($ordering == "Priority") {
+    usort($tickets, function($a, $b)
+    {
+        return strcmp($a["Priority"], $b["Priority"]);
+    });
+}
+
 http_response_code(200); 
 echo json_encode($tickets);
