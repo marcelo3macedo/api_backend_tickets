@@ -9,10 +9,16 @@ include_once 'objects/interaction.php';
 $database = new Database();
 $db = $database->getConnection();
 
+$ordering = "";
+
+if (isset($_GET['order'])) {
+    $ordering = $_GET['order'];
+}
+
 $ticket = new Ticket($db);
 $interaction = new Interaction($db);
 
-$tickets = $ticket->readToJson();
+$tickets = $ticket->readToJson($ordering);
 
 for ($x = 0; $x < count($tickets); $x++) {
     $tickets[$x]["Interactions"] = $interaction->getByTicket($tickets[$x]["TicketID"]);

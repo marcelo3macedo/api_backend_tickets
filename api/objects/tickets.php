@@ -10,10 +10,12 @@ class Ticket {
         $this->conn = $db;
     }
 
-    function readToJson(){ 
+    function readToJson($ordering){ 
+        $order = $this->getOrderBy($ordering);
         $response=array();
-        $query = "SELECT * FROM " . $this->table_name;
-     
+
+        $query = "SELECT * FROM " . $this->table_name . " " . $order;
+
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
 
@@ -34,6 +36,15 @@ class Ticket {
         }
      
         return $response;
+    }
+
+    function getOrderBy($ordering) {
+        if (strlen($ordering) > 0) {
+            if ($ordering == "DateCreate" OR $ordering == "DateUpdate")
+            return " ORDER BY " . $ordering;
+        }   
+        
+        return "";
     }
 }
 ?>
