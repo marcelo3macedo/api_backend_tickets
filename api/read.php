@@ -15,6 +15,7 @@ $ordering = "";
 $start = "";
 $end = "";
 $pag = "";
+$priority = "";
 
 if (isset($_GET['pag'])) {
     $pag = $_GET['pag'];
@@ -32,6 +33,10 @@ if (isset($_GET['end'])) {
     $end = $_GET['end'];
 }
 
+if (isset($_GET['priority'])) {
+    $priority = $_GET['priority'];
+}
+
 $ticket = new Ticket($db);
 $interaction = new Interaction($db);
 
@@ -39,7 +44,13 @@ $tickets = $ticket->readToJson($ordering, $start, $end, $pag);
 
 for ($x = 0; $x < count($tickets); $x++) {
     $tickets[$x]["Interactions"] = $interaction->getByTicket($tickets[$x]["TicketID"]);
-    $tickets[$x]["Priority"] = $ticket->getPriority($tickets[$x], $high_priority);    
+    $tickets[$x]["Priority"] = $ticket->getPriority($tickets[$x], $high_priority);  
+    
+    if (strlen($priority) > 0) {
+        if ($tickets[$x]["Priority"] != $priority) {
+            array_splice($tickets, $x, 1);
+        }
+    }
 } 
 
 if ($ordering == "Priority") {

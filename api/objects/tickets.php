@@ -3,7 +3,7 @@ class Ticket {
  
     private $conn;
     private $table_name = "Ticket";
-    private $limit = 30;
+    private $limit = 10;
     
     public $TicketID;
     
@@ -18,7 +18,8 @@ class Ticket {
         $response=array();
 
         $query = "SELECT * FROM " . $this->table_name . " " . $filter . " " . $order . " " . $pagination;
-        
+        echo $query;
+
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
 
@@ -43,7 +44,7 @@ class Ticket {
 
     function getPage($pag) {
         if (strlen($pag) > 0 && is_numeric($pag)) {
-            $offset = $this->limit * $pag;
+            $offset = $this->limit * ($pag - 1);
             return " LIMIT " . $this->limit . " OFFSET " . $offset;    
         }
 

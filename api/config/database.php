@@ -1,10 +1,10 @@
 <?php
 class Database{
  
-    private $host = "localhost:3306";
-    private $db_name = "case_sample";
-    private $username = "marcelo";
-    private $password = "marcelo33";
+    private $host = "temporaryomace.mysql.dbaas.com.br:3306";
+    private $db_name = "temporaryomace";
+    private $username = "temporaryomace";
+    private $password = "temporary@123";
     public $conn;
  
     public function getConnection() {
